@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const MediaScreen()
   ];
 
-  void _incrementCounter() {
+  void _themeChange() {
     final settings = Provider.of<ThemeProvider>(context, listen: false);
     settings.toggleTheme();
     if(themeIcon == true){
@@ -36,11 +36,12 @@ class _HomeScreenState extends State<HomeScreen> {
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             backgroundColor: backgroundColor,
             title: const Text('ToDo App', style: TextStyle(color: forgroundColor),),
             actions: [
               IconButton(onPressed: (){
-                _incrementCounter();
+                _themeChange();
                 setState(() {
                   
                 });

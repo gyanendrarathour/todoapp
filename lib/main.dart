@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/provider/themeProvider.dart';
 import 'package:todoapp/view/home.dart';
+import 'package:todoapp/view/route/appRouteConfig.dart';
 
 void main() {
   runApp(MultiProvider(
@@ -20,13 +21,14 @@ class MyApp extends StatelessWidget {
     return Builder(    
       builder: (BuildContext context) {
         final settings = Provider.of<ThemeProvider>(context);
-        return MaterialApp(
+        return MaterialApp.router(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           // themeMode: ThemeMode.system,
           theme: settings.currentTheme,
           // darkTheme: ThemeData.dark(),
-          home: const HomeScreen(),
+          routerConfig: AppRouteConfig().router,
+          // home: const HomeScreen(),
         );
       }
     );
