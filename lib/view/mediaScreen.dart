@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, file_names
+
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -39,9 +41,9 @@ class _MediaScreenState extends State<MediaScreen> {
               TextButton(
                   onPressed: () async {
                     try {
-                      ImagePicker _imagePicker = ImagePicker();
-                      final image = await _imagePicker.pickImage(
-                          source: ImageSource.gallery);
+                      ImagePicker imagePicker = ImagePicker();
+                      final image = await imagePicker.pickImage(
+                          source: ImageSource.gallery, imageQuality: 25);
                       final imagePath = File(image!.path);
                       final mimeType = lookupMimeType(image.path)!.split('/');
                       final mediaType = mimeType[0];
@@ -52,8 +54,7 @@ class _MediaScreenState extends State<MediaScreen> {
                       if (mediaType == 'image') {
                         dbHelper!.insertPicture(
                             title: _titleController.text,
-                            image: base64,
-                            type: mediaType);
+                            image: base64);
                         _titleController.clear();
                         GoRouter.of(context).pop();
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -74,31 +75,24 @@ class _MediaScreenState extends State<MediaScreen> {
               TextButton(
                   onPressed: () async {
                     try {
-                      ImagePicker _imagePicker = ImagePicker();
-                      final image = await _imagePicker.pickImage(
-                          source: ImageSource.camera);
+                      ImagePicker imagePicker = ImagePicker();
+                      final image = await imagePicker.pickImage(
+                          source: ImageSource.camera, imageQuality: 25);
                       final imagePath = File(image!.path);
-                      final mimeType = lookupMimeType(image.path)!.split('/');
-                      final mediaType = mimeType[0];
+                      // final mimeType = lookupMimeType(image.path)!.split('/');
+                      // final mediaType = mimeType[0];
                       // print(mediaType);
                       List<int> bytes = await imagePath.readAsBytes();
                       String base64 = base64Encode(bytes);
 
-                      if (mediaType == 'image') {
-                        dbHelper!.insertPicture(
-                            title: _titleController.text,
-                            image: base64,
-                            type: mediaType);
-                        _titleController.clear();
-                        GoRouter.of(context).pop();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Data Inserted.')));
-                        getMedia();
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                            content: Text(
-                                'Error: Invalid File Formate so please select only Image media file.')));
-                      }
+                      dbHelper!.insertPicture(
+                          title: _titleController.text,
+                          image: base64,);
+                      _titleController.clear();
+                      GoRouter.of(context).pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Image Inserted.')));
+                      getMedia();
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text(
@@ -169,10 +163,11 @@ class _MediaScreenState extends State<MediaScreen> {
               itemCount: allMedia.length,
               itemBuilder: (_, index) {
                 String blobImage = allMedia[index]['image'].toString();
-                Uint8List _bytesImage = Base64Decoder().convert(blobImage);
+                Uint8List bytesImage = const Base64Decoder().convert(blobImage);
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
+                    clipBehavior: Clip.hardEdge,
                     child: Stack(
                       alignment: AlignmentDirectional.bottomEnd,
                       children: [
@@ -183,8 +178,8 @@ class _MediaScreenState extends State<MediaScreen> {
                               color: forgroundColor,
                               borderRadius: BorderRadius.circular(20)),
                           child: Image.memory(
-                            _bytesImage,
-                            fit: BoxFit.contain,
+                            bytesImage,
+                            fit: BoxFit.cover,
                           ),
                         ),
                         Container(
@@ -194,7 +189,7 @@ class _MediaScreenState extends State<MediaScreen> {
                             borderRadius: BorderRadius.only(
                                 bottomLeft: Radius.circular(10),
                                 bottomRight: Radius.circular(10)),
-                            color: Colors.grey,
+                            color: backgroundColor,
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -204,7 +199,7 @@ class _MediaScreenState extends State<MediaScreen> {
                                 Text(
                                   allMedia[index]['title'],
                                   style: const TextStyle(
-                                      color: backgroundColor, fontSize: 20),
+                                      color: forgroundColor, fontSize: 15),
                                 ),
                                 IconButton(
                                     onPressed: () {
@@ -212,7 +207,7 @@ class _MediaScreenState extends State<MediaScreen> {
                                     },
                                     icon: const Icon(
                                       Icons.delete,
-                                      color: backgroundColor,
+                                      color: forgroundColor,
                                     ))
                               ],
                             ),

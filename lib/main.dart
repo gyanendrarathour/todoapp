@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/provider/themeProvider.dart';
-import 'package:todoapp/view/home.dart';
 import 'package:todoapp/view/route/appRouteConfig.dart';
 
 void main() {

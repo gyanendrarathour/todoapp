@@ -1,7 +1,6 @@
-import 'dart:io';
-import 'dart:ui';
+// ignore_for_file: file_names
 
-import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -26,7 +25,7 @@ class DBhelper {
     return await openDatabase(dbPath, onCreate: (db, version){
       // Create Table
       db.execute("CREATE Table todo (s_no integer primary key autoincrement, title text, desc text, status integer)");
-      db.execute("CREATE TABLE media (id INTEGER PRIMARY KEY autoincrement, title TEXT, image Uint8List, type TEXT)");
+      db.execute("CREATE TABLE media (id INTEGER PRIMARY KEY autoincrement, title TEXT, image BLOB)");
     },version: 1);
   }
 
@@ -63,12 +62,11 @@ class DBhelper {
 
 
   // Image/Videos Queries
-  Future<bool> insertPicture({required String title, required String image, required String type}) async {
+  Future<bool> insertPicture({required String title, required String image}) async {
   var db = await getDB();
   int rowsEffected = await db.insert("media", {
     'title': title,
-    'image': image,
-    'type': type
+    'image': image
   });
   return rowsEffected>0;
 }

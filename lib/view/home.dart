@@ -42,15 +42,14 @@ class _HomeScreenState extends State<HomeScreen> {
             actions: [
               IconButton(onPressed: (){
                 _themeChange();
-                setState(() {
-                  
+                setState(() {                  
                 });
-              }, icon: themeIcon? const Icon(Icons.sunny, color: forgroundColor,): const Icon(Icons.dark_mode))
+              }, icon: themeIcon? const Icon(Icons.sunny): const Icon(Icons.dark_mode))
             ],
             bottom: const TabBar(
               indicatorColor: forgroundColor,
               labelColor: forgroundColor,
-              labelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              labelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
               unselectedLabelColor: forgroundColor,
               unselectedLabelStyle: TextStyle(fontSize: 15),
               indicatorSize: TabBarIndicatorSize.tab,

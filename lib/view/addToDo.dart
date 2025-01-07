@@ -1,6 +1,7 @@
+// ignore_for_file: use_build_context_synchronously, file_names
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:todoapp/view/home.dart';
 
 import '../db/dbHelper.dart';
 import 'colors/colors.dart';
@@ -61,6 +62,7 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
                     if (value!.isEmpty) {
                       return 'Plase enter title';
                     }
+                    return null;
                   },
                 ),
                 const SizedBox(
@@ -78,10 +80,11 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
                     if (value!.isEmpty) {
                       return 'Plase enter description';
                     }
+                    return null;
                   },
                 ),
                 const Spacer(),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
@@ -91,7 +94,7 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
                       child: const Text('Add Data')),
                 ),
                 const SizedBox(height: 15,),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
