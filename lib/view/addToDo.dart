@@ -14,8 +14,8 @@ class AddToDoScreen extends StatefulWidget {
 
 class _AddToDoScreenState extends State<AddToDoScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _descController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descController = TextEditingController();
 
   DBhelper? dbHelper = DBhelper.dbInstace;
   

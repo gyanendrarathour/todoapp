@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:ui';
 
+import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -20,10 +22,11 @@ class DBhelper {
   }
   Future<Database> openDB() async{
     Directory appDir = await getApplicationDocumentsDirectory();
-    String dbPath = join(appDir.path, "todo.db");
+    String dbPath = join(appDir.path, "todo1.db");
     return await openDatabase(dbPath, onCreate: (db, version){
       // Create Table
       db.execute("CREATE Table todo (s_no integer primary key autoincrement, title text, desc text, status integer)");
+      db.execute("CREATE TABLE media (id INTEGER PRIMARY KEY autoincrement, title TEXT, image Uint8List, type TEXT)");
     },version: 1);
   }
 
@@ -57,4 +60,33 @@ class DBhelper {
     int rowsEffected = await db.delete('todo', where: "s_no=?", whereArgs: [id]);
     return rowsEffected>0;
   }
+
+
+  // Image/Videos Queries
+  Future<bool> insertPicture({required String title, required String image, required String type}) async {
+  var db = await getDB();
+  int rowsEffected = await db.insert("media", {
+    'title': title,
+    'image': image,
+    'type': type
+  });
+  return rowsEffected>0;
+}
+
+Future<List<Map<String,dynamic>>> showPictures() async {
+    var db = await getDB();
+    List<Map<String, dynamic>> mData = await db.query('media');
+    return mData;
+  }
+
+  Future<bool> deletePicture({required int id}) async{
+    var db = await getDB();
+    int rowsEffected = await db.delete('media', where: "id=?", whereArgs: [id]);
+    return rowsEffected>0;
+  }
+
+Future close() async{
+  var db = await getDB();
+  db.close();
+}
 }

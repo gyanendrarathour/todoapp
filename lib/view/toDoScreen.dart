@@ -26,6 +26,30 @@ class _ToDoScreenState extends State<ToDoScreen> {
     getNotes();
   }
 
+  deleteData(int index) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Are you sure to Delete!!!'),
+            actions: [
+              TextButton(
+                  onPressed: () async{
+                    await dbHelper!.deleteData(id: allNotes[index]['s_no']);
+                    GoRouter.of(context).pop();
+                    getNotes();
+                  },
+                  child: const Text('Yes')),
+              TextButton(
+                  onPressed: () {
+                    GoRouter.of(context).pop();
+                  },
+                  child: const Text('No'))
+            ],
+          );
+        });
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -68,9 +92,8 @@ class _ToDoScreenState extends State<ToDoScreen> {
                       ),
                       title: Text(allNotes[index]['title'], style: const TextStyle(decoration: TextDecoration.lineThrough),),
                       subtitle: Text(allNotes[index]['desc'], style: const TextStyle(decoration: TextDecoration.lineThrough)),
-                      trailing: IconButton(onPressed: ()async{
-                        await dbHelper!.deleteData(id: allNotes[index]['s_no']);
-                        getNotes();
+                      trailing: IconButton(onPressed: (){
+                        deleteData(index);
                       }, icon: const Icon(Icons.delete)),
                     ),
                   ),

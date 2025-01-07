@@ -50,10 +50,13 @@ class _HomeScreenState extends State<HomeScreen> {
             bottom: const TabBar(
               indicatorColor: forgroundColor,
               labelColor: forgroundColor,
+              labelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              unselectedLabelColor: forgroundColor,
+              unselectedLabelStyle: TextStyle(fontSize: 15),
               indicatorSize: TabBarIndicatorSize.tab,
               tabs: [
               Tab(text: 'ToDo',),
-              Tab(text: 'Image/Video',)
+              Tab(text: 'Image',)
             ]),
           ),
           body: TabBarView(children: screens),
